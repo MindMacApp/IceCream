@@ -70,8 +70,14 @@ extension CKRecordConvertible where Self: Object {
             } else {
                 assertionFailure("\(primaryKeyProperty.name)'s value should be Int type")
             }
+        case .objectId:
+            if let primaryValue = self[primaryKeyProperty.name] as? ObjectId {
+                return CKRecord.ID(recordName: primaryValue.stringValue, zoneID: Self.zoneID)
+            } else {
+                assertionFailure("\(primaryKeyProperty.name)'s value should be ObjectId type")
+            }
         default:
-            assertionFailure("Primary key should be String or Int")
+            assertionFailure("Primary key should be String or Int or ObjectId")
         }
         fatalError("Should have a reasonable recordID")
     }
